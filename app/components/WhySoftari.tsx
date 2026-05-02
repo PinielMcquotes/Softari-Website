@@ -1,62 +1,65 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
-const moats = [
+const capabilities = [
   {
+    id: 'CAP-01',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round">
+        <rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/>
+        <line x1="4" y1="9" x2="9" y2="9"/><line x1="4" y1="15" x2="9" y2="15"/>
       </svg>
     ),
-    title: 'IoT + Smart Contracts',
-    body: 'We build the hardware and software infrastructure. Every rental is automated, trustless, and fully auditable on-chain. Competitors cannot replicate this without years of R&D.',
+    title: 'Proprietary IoT Hardware',
+    body: 'Not off-the-shelf — locally engineered devices tuned for heat, dust, low power, and intermittent connectivity. Competitors need years to replicate.',
   },
   {
+    id: 'CAP-02',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
       </svg>
     ),
     title: 'Platform, Not a Product',
-    body: 'Power packs are our entry point. The Softari platform scales to equipment, vehicles, office space — any physical asset. Our addressable market is limitless.',
+    body: 'Power packs are the entry point. The Softari platform scales to equipment, vehicles, space — any physical asset. The addressable market is unlimited.',
   },
   {
+    id: 'CAP-03',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
       </svg>
     ),
     title: 'Two-Sided Network Effects',
-    body: 'Every new supplier attracts more creators. Every creator attracts more suppliers. The more we grow, the harder we are to displace — a true marketplace moat.',
+    body: 'Every supplier attracts more renters. Every renter attracts more suppliers. Growth compounds — a true marketplace moat that deepens with scale.',
   },
   {
+    id: 'CAP-04',
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
       </svg>
     ),
     title: 'Proprietary Data Layer',
-    body: 'Our IoT layer generates unique asset performance intelligence. We sell this data back to suppliers as a SaaS product — a revenue stream no competitor has.',
+    body: 'The IoT layer generates unique asset performance intelligence. Sold back to suppliers as SaaS — a revenue stream no competitor in this space has.',
   },
 ]
 
 const comparison = [
-  { attr: 'What it is',    choto: 'Consumer gadget',       softari: 'Infrastructure platform'              },
-  { attr: 'Asset types',   choto: 'Phone charging only',   softari: 'Power · Equipment · Space · Energy'   },
-  { attr: 'Technology',    choto: 'QR scan & charge',      softari: 'LoRaWAN IoT + Smart Contracts'        },
-  { attr: 'For suppliers', choto: 'No — consumer only',    softari: 'Yes — passive income enabled'         },
-  { attr: 'Scalability',   choto: 'Hardware-limited',      softari: 'Any physical asset, any category'     },
+  { attr: 'What it is',    competitor: 'Consumer gadget',     softari: 'Infrastructure platform'             },
+  { attr: 'Asset types',   competitor: 'Single-purpose only', softari: 'Power · Equipment · Space · Energy'  },
+  { attr: 'Technology',    competitor: 'QR scan & charge',    softari: 'LoRaWAN IoT + Smart Contracts'       },
+  { attr: 'For suppliers', competitor: 'No — consumer only',  softari: 'Yes — passive income enabled'        },
+  { attr: 'Scalability',   competitor: 'Hardware-limited',    softari: 'Any physical asset, any category'    },
 ]
 
 export default function WhySoftari() {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
+  const [activeRow, setActiveRow] = useState<number | null>(null)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setInView(true) },
-      { threshold: 0.1 }
-    )
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold: 0.1 })
     if (ref.current) obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
@@ -66,129 +69,172 @@ export default function WhySoftari() {
       id="why-softari"
       ref={ref}
       className="section-pad relative overflow-hidden"
-      style={{ background: '#111111' }}
+      style={{ background: 'var(--bg-raised)' }}
     >
-      {/* Subtle top-right glow */}
+      {/* Subtle glow */}
       <div
-        className="absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)' }}
+        className="absolute -top-64 -right-64 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0,212,255,0.04) 0%, transparent 65%)' }}
       />
 
       <div className="container-pad relative z-10">
 
-        {/* ── Moats section ── */}
-        <div className="text-center mb-14">
-          <span
-            className="inline-block text-xs font-mono-dm tracking-widest uppercase px-3 py-1 rounded-full mb-4"
-            style={{
-              color: 'var(--grey-200)',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.14)',
-            }}
+        {/* ── Header ── */}
+        <div className="text-center mb-14 ">
+          <span className="eyebrow">System Capabilities</span>
+          <h2
+            className="font-display font-black mt-5 mb-3"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', color: 'var(--text-white)', letterSpacing: '-0.025em', lineHeight: 0.95 }}
           >
-            Our Unfair Advantages
-          </span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-2" style={{ color: 'var(--white)' }}>
-            We are not a product.
+            Why This System Wins.
           </h2>
-          <h2 className="font-display text-3xl md:text-5xl font-bold" style={{ color: 'var(--grey-300)' }}>
-            We are the infrastructure.
-          </h2>
+          <p
+            className="font-display italic"
+            style={{ fontSize: 'clamp(1rem, 2vw, 1.3rem)', color: 'var(--text-mid)' }}
+          >
+            We are not a product. We are the infrastructure.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5 md:gap-6 mb-20 md:mb-24">
-          {moats.map((m, i) => (
+        {/* ── Capability modules ── */}
+        <div className="grid md:grid-cols-2 gap-3 mb-20">
+          {capabilities.map((c, i) => (
             <div
-              key={m.title}
-              className={`glass-card p-6 hover-lift flex gap-5 transition-all duration-700 ${
-                inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+              key={c.id}
+              className="group flex gap-4 p-6 cursor-default"
               style={{
-                transitionDelay: `${i * 100}ms`,
-                borderLeft: '2px solid rgba(255,255,255,0.25)',
-                borderColor: undefined,
-                border: '1px solid rgba(255,255,255,0.07)',
-                borderLeftWidth: '2px',
-                borderLeftColor: 'rgba(255,255,255,0.3)',
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border-dim)',
+                borderLeft: '2px solid rgba(0,212,255,0.3)',
+                borderRadius: 'var(--radius-lg)',
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'translateY(0)' : 'translateY(16px)',
+                transition: 'opacity 0.6s, transform 0.6s, border-color 0.3s, background 0.3s',
+                transitionDelay: `${i * 90}ms`,
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderLeftColor = 'var(--cyan)'
+                e.currentTarget.style.background = 'var(--bg-surface)'
+                e.currentTarget.style.boxShadow = '-4px 0 20px rgba(0,212,255,0.08)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderLeftColor = 'rgba(0,212,255,0.3)'
+                e.currentTarget.style.background = 'var(--bg-elevated)'
+                e.currentTarget.style.boxShadow = 'none'
               }}
             >
-              <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
-                style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--grey-100)' }}
-              >
-                {m.icon}
-              </div>
               <div>
-                <h3 className="font-display text-xl font-bold mb-2" style={{ color: 'var(--white)' }}>
-                  {m.title}
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
-                  {m.body}
-                </p>
+                {/* Module ID */}
+                <div className="font-mono-dm text-[0.5rem] tracking-widest mb-2 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+                  <span className="w-1 h-1 rounded-full" style={{ background: 'var(--cyan)', opacity: 0.5 }} />
+                  {c.id}
+                </div>
+                {/* Icon + title */}
+                <div className="flex items-center gap-2.5 mb-2">
+                  <span style={{ color: 'var(--cyan)' }}>{c.icon}</span>
+                  <h3 className="font-display text-lg font-bold" style={{ color: 'var(--text-white)' }}>{c.title}</h3>
+                </div>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-mid)' }}>{c.body}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* ── Competitive table ── */}
-        <div>
+        {/* ── Terminal comparison ── */}
+        <div className="">
           <div className="text-center mb-8">
-            <p className="font-display text-xl md:text-2xl italic mb-2" style={{ color: 'var(--grey-100)' }}>
-              "What makes you different from Choto Energy?"
+            <p
+              className="font-display text-xl md:text-2xl italic mb-2"
+              style={{ color: 'var(--text-soft)' }}
+            >
+              "What makes you different from your competitors?"
             </p>
-            <p className="text-sm" style={{ color: 'var(--muted)' }}>
-              Great question. Here's the honest answer.
+            <p className="font-mono-dm text-[0.65rem] tracking-wider" style={{ color: 'var(--text-muted)' }}>
+              SYSTEM COMPARISON · INFRASTRUCTURE LAYER ANALYSIS
             </p>
           </div>
 
-          <div
-            className="rounded-2xl overflow-hidden overflow-x-auto"
-            style={{ border: '1px solid rgba(255,255,255,0.1)' }}
-          >
+          <div className="terminal overflow-x-auto">
+            {/* Terminal bar */}
+            <div className="terminal-bar">
+              <div className="terminal-dot" /><div className="terminal-dot" /><div className="terminal-dot" />
+              <span className="font-mono-dm text-[0.55rem] tracking-widest ml-2 flex-1" style={{ color: 'var(--text-muted)' }}>
+                softari.compare → competitive_analysis.run
+              </span>
+              <span className="font-mono-dm text-[0.55rem] tracking-widest" style={{ color: 'var(--cyan)' }}>
+                LIVE
+              </span>
+            </div>
+
             {/* Table header */}
-            <div className="grid grid-cols-3 min-w-[480px]">
-              <div className="p-4" style={{ background: 'rgba(0,0,0,0.4)' }} />
-              <div
-                className="p-4 text-center text-sm font-medium"
-                style={{ background: 'rgba(25,25,25,0.7)', color: 'var(--grey-400)' }}
-              >
-                Choto Energy
+            <div
+              className="grid min-w-[520px]"
+              style={{ gridTemplateColumns: '1.2fr 1fr 1fr', borderBottom: '1px solid var(--border-dim)' }}
+            >
+              <div className="px-5 py-3.5 font-mono-dm text-[0.58rem] tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
+                Parameter
               </div>
               <div
-                className="p-4 text-center text-sm font-bold"
-                style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--white)' }}
+                className="px-5 py-3.5 font-mono-dm text-[0.58rem] tracking-widest uppercase text-center"
+                style={{ color: 'var(--text-dim)', borderLeft: '1px solid var(--border-dim)', background: 'rgba(0,0,0,0.2)' }}
               >
-                <span
-                  className="inline-block px-3 py-1 rounded-full text-xs font-mono-dm font-bold tracking-wider"
-                  style={{ background: 'var(--white)', color: 'var(--black)' }}
-                >
-                  Softari Technologies
-                </span>
+                Other Providers
+              </div>
+              <div
+                className="px-5 py-3.5 font-mono-dm text-[0.58rem] tracking-widest uppercase text-center"
+                style={{ color: 'var(--cyan)', borderLeft: '1px solid rgba(0,212,255,0.2)', background: 'rgba(0,212,255,0.05)' }}
+              >
+                Softari Technologies
               </div>
             </div>
 
             {comparison.map((row, i) => (
               <div
                 key={row.attr}
-                className="grid grid-cols-3 min-w-[480px]"
+                className="grid cursor-pointer min-w-[520px]"
                 style={{
-                  borderTop: '1px solid rgba(255,255,255,0.05)',
-                  background: i % 2 === 0 ? 'rgba(12,12,12,0.7)' : 'rgba(20,20,20,0.5)',
+                  gridTemplateColumns: '1.2fr 1fr 1fr',
+                  borderTop: '1px solid var(--border-dim)',
+                  background: activeRow === i
+                    ? 'rgba(0,212,255,0.04)'
+                    : i % 2 === 0 ? 'var(--bg-raised)' : 'var(--bg-elevated)',
+                  transition: 'background 0.2s',
                 }}
+                onMouseEnter={() => setActiveRow(i)}
+                onMouseLeave={() => setActiveRow(null)}
               >
-                <div className="p-4 text-sm font-medium" style={{ color: 'var(--cream)' }}>{row.attr}</div>
-                <div className="p-4 text-sm text-center" style={{ color: 'var(--grey-400)' }}>{row.choto}</div>
-                <div className="p-4 text-sm text-center font-medium" style={{ color: 'var(--grey-100)' }}>{row.softari}</div>
+                <div className="px-5 py-3.5 font-mono-dm text-xs" style={{ color: 'var(--text-soft)' }}>{row.attr}</div>
+                <div
+                  className="px-5 py-3.5 font-mono-dm text-xs text-center"
+                  style={{ color: 'var(--text-dim)', borderLeft: '1px solid var(--border-dim)' }}
+                >
+                  {row.competitor}
+                </div>
+                <div
+                  className="px-5 py-3.5 font-mono-dm text-xs text-center font-medium"
+                  style={{
+                    color: activeRow === i ? 'var(--cyan)' : 'var(--text-soft)',
+                    borderLeft: '1px solid rgba(0,212,255,0.15)',
+                    transition: 'color 0.2s',
+                  }}
+                >
+                  {row.softari}
+                </div>
               </div>
             ))}
-          </div>
 
-          <p className="text-center text-sm mt-6 font-medium" style={{ color: 'var(--grey-200)' }}>
-            Choto rents a battery.{' '}
-            <span style={{ color: 'var(--white)' }}>
-              We build the operating layer every asset-sharing business in Africa will run on.
-            </span>
-          </p>
+            {/* Terminal conclusion */}
+            <div
+              className="px-5 py-4 font-mono-dm text-xs"
+              style={{ background: 'rgba(0,212,255,0.04)', borderTop: '1px solid rgba(0,212,255,0.12)' }}
+            >
+              <span style={{ color: 'var(--text-dim)' }}>$ </span>
+              <span style={{ color: 'var(--text-mid)' }}>conclusion → </span>
+              <span style={{ color: 'var(--text-soft)' }}>Others rent a device. </span>
+              <span style={{ color: 'var(--cyan)' }}>Softari builds the operating layer every asset-sharing business in Africa will run on.</span>
+              <span className="animate-blink" style={{ color: 'var(--cyan)' }}>_</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

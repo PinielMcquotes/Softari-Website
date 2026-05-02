@@ -10,106 +10,136 @@ export default function CTASection() {
 
   return (
     <section
+      id="cta"
       className="section-pad relative overflow-hidden"
-      style={{ background: 'linear-gradient(160deg, #080808 0%, #111111 50%, #0d0d0d 100%)' }}
+      style={{ background: 'var(--bg-base)' }}
     >
-      {/* Glow orbs */}
+      {/* Dot grid */}
+      <div className="absolute inset-0 dot-grid pointer-events-none" style={{ opacity: 0.2 }} />
+
+      {/* Cyan glow top-left */}
       <div
-        className="absolute -top-32 -left-32 w-96 h-96 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)' }}
+        className="absolute -top-48 -left-48 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 65%)' }}
       />
+      {/* Cyan glow bottom-right */}
       <div
-        className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%)' }}
+        className="absolute -bottom-48 -right-48 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0,212,255,0.04) 0%, transparent 65%)' }}
       />
 
-      {/* Left accent */}
+      {/* Left accent line */}
       <div
         className="absolute left-0 top-0 bottom-0 w-px"
-        style={{ background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent)' }}
+        style={{ background: 'linear-gradient(to bottom, transparent, rgba(0,212,255,0.25), transparent)' }}
       />
 
       <div className="container-pad relative z-10 text-center">
 
         {/* Eyebrow */}
-        <span
-          className="inline-block text-xs font-mono-dm tracking-widest uppercase px-3 py-1 rounded-full mb-6"
-          style={{
-            color: 'var(--grey-200)',
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.15)',
-          }}
-        >
-          The Ask
+        <span className="eyebrow mb-6 inline-flex">
+          Infrastructure Participation
         </span>
 
         {/* Headline */}
-        <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black mb-4 leading-tight" style={{ color: 'var(--white)' }}>
-          Help Us Give Chidi<br />
-          <span className="gradient-text">His Power Back.</span>
+        <h2
+          className="font-display font-black leading-[0.92] tracking-tight mt-6 mb-5"
+          style={{ fontSize: 'clamp(2.2rem, 6vw, 5rem)', color: 'var(--text-white)' }}
+        >
+          Help Us Give Africa's Creators<br />
+          <span className="gradient-text">Their Power Back.</span>
         </h2>
-        <p className="font-display text-lg md:text-xl italic mb-10" style={{ color: 'rgba(240,240,240,0.5)' }}>
-          And the 600 million people just like him.
+
+        <p
+          className="font-display italic mb-4"
+          style={{ fontSize: 'clamp(1rem, 2vw, 1.3rem)', color: 'var(--text-mid)' }}
+        >
+          And the 600 million people just like them.
         </p>
 
-        {/* Two metric boxes */}
-        <div className="flex flex-col sm:flex-row gap-5 justify-center mb-12 max-w-2xl mx-auto">
+        {/* Strategic framing line */}
+        <p
+          className="font-mono-dm text-[0.65rem] tracking-widest uppercase mb-12"
+          style={{ color: 'var(--text-muted)' }}
+        >
+          We are opening access to early infrastructure participation.
+        </p>
+
+        {/* Two raise boxes — increased padding p-8, gap-6 */}
+        <div className="flex flex-col sm:flex-row gap-6 justify-center mb-14 max-w-2xl mx-auto">
           {[
-            { label: 'RAISING',  val: 'USD $30,000', sub: 'Seed round — first power pack production run' },
-            { label: 'OFFERING', val: '20% Equity',  sub: 'Strategic partner stake in Softari Technologies' },
+            {
+              label: 'RAISING',
+              val: 'USD $60,000',
+              sub: 'Seed round — first power pack production run',
+            },
+            {
+              label: 'OFFERING',
+              val: '20% Equity',
+              sub: 'Strategic partner stake in Softari Technologies',
+            },
           ].map(b => (
-            <div
-              key={b.label}
-              className="flex-1 p-6 rounded-xl text-left"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                borderLeftWidth: '3px',
-                borderLeftColor: 'var(--white)',
-              }}
-            >
-              <p className="text-xs font-mono-dm tracking-widest uppercase mb-2" style={{ color: 'var(--grey-400)' }}>
-                {b.label}
-              </p>
-              <p className="font-display text-3xl font-bold mb-1" style={{ color: 'var(--white)' }}>
-                {b.val}
-              </p>
-              <p className="text-xs italic" style={{ color: 'var(--muted)' }}>{b.sub}</p>
+            <div key={b.label} className="raise-box flex-1">
+              <div className="raise-box-label">{b.label}</div>
+              <div className="raise-box-val">{b.val}</div>
+              <div className="raise-box-sub">{b.sub}</div>
             </div>
           ))}
         </div>
 
         {/* Roadmap milestones */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
-          {milestones.map((m) => (
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
+          {milestones.map(m => (
             <div
               key={m.num}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-left"
+              className="flex items-center gap-3 px-5 py-3.5 text-sm text-left"
               style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.09)',
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border-dim)',
+                borderRadius: 'var(--radius-md)',
               }}
             >
-              <span className="font-mono-dm text-xs font-bold flex-shrink-0" style={{ color: 'var(--grey-300)' }}>
+              <span
+                className="font-mono-dm text-xs font-bold flex-shrink-0"
+                style={{ color: 'var(--cyan)' }}
+              >
                 {m.num}
               </span>
-              <span style={{ color: 'var(--grey-100)' }}>{m.text}</span>
+              <span style={{ color: 'var(--text-soft)' }}>{m.text}</span>
             </div>
           ))}
         </div>
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-          <Link href="#contact" className="btn-primary text-base px-10 py-4">
-            Get Early Access →
-          </Link>
-          <Link href="mailto:hello@softari.tech" className="btn-outline text-base px-10 py-4">
+        {/* CTAs
+            — "Deploy Assets"    → softari.co.zw
+            — "Talk to Founders" → mailto both addresses
+        */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="https://www.softari.co.zw"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary btn-lg animate-pulse-teal"
+          >
+            Deploy Assets
+            <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a
+            href="mailto:admin@softari.co.zw,sales@softari.co.zw?subject=Partnership%20Enquiry%20%E2%80%94%20Softari%20Technologies"
+            className="btn-ghost btn-lg"
+          >
             Talk to the Founders
-          </Link>
+          </a>
         </div>
 
-        <p className="text-xs mt-6" style={{ color: 'var(--muted)' }}>
-          softari.tech · hello@softari.tech · Building Africa's Asset Economy
+        {/* Contact line */}
+        <p
+          className="font-mono-dm text-[0.6rem] tracking-wider mt-8"
+          style={{ color: 'var(--text-muted)' }}
+        >
+          admin@softari.co.zw · sales@softari.co.zw · +263 77 609 1349
         </p>
       </div>
     </section>

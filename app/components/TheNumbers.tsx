@@ -1,88 +1,38 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
-interface Stat {
-  numericValue: number
-  prefix: string
-  suffix: string
-  label: string
-  sub: string
-  index: string
-}
-
-const stats: Stat[] = [
-  {
-    numericValue: 1,
-    prefix: '$', suffix: 'T+',
-    label: 'In idle industrial assets across Africa',
-    sub: 'Equipment, energy, and space sitting dormant — every single day.',
-    index: '01',
-  },
-  {
-    numericValue: 600,
-    prefix: '', suffix: 'M+',
-    label: 'Africans without reliable power',
-    sub: 'Locked out of the productive economy by infrastructure failure.',
-    index: '02',
-  },
-  {
-    numericValue: 60,
-    prefix: '', suffix: '%',
-    label: "Of Africa's youth face underemployment",
-    sub: 'The skills exist. The tools do not. We change that.',
-    index: '03',
-  },
-  {
-    numericValue: 75,
-    prefix: '$', suffix: '/mo',
-    label: 'Monthly revenue per power pack',
-    sub: 'Just 15 rental days at $5/day. Fully paid back in 4 months.',
-    index: '04',
-  },
+const stats = [
+  { numericValue: 1,   prefix: '$', suffix: 'T+',  label: 'Idle industrial assets in Africa',  sub: 'Sitting unused every single day',        id: 'ASSET-MKT'  },
+  { numericValue: 600, prefix: '',  suffix: 'M+',  label: 'Africans without reliable power',   sub: 'Locked out of the productive economy',   id: 'PWR-DEFICIT' },
+  { numericValue: 60,  prefix: '',  suffix: '%',   label: "Youth underemployment rate",         sub: 'Skills without tools or access',          id: 'EMPL-GAP'   },
+  { numericValue: 75,  prefix: '$', suffix: '/mo', label: 'Revenue per Softari power pack',     sub: 'Just 15 rental days at $5/day',           id: 'REV-NODE'   },
 ]
 
-function CountUp({ target, prefix, suffix, inView }: {
-  target: number; prefix: string; suffix: string; inView: boolean
-}) {
+function CountUp({ target, prefix, suffix, inView }: { target: number; prefix: string; suffix: string; inView: boolean }) {
   const [count, setCount] = useState(0)
-
   useEffect(() => {
     if (!inView) return
-    const duration = 2000
-    const steps    = 70
-    const increment = target / steps
-    let current = 0
-    const timer = setInterval(() => {
-      current += increment
-      if (current >= target) { setCount(target); clearInterval(timer) }
-      else setCount(Math.floor(current))
-    }, duration / steps)
-    return () => clearInterval(timer)
+    const steps = 60; const dur = 1800; const inc = target / steps; let cur = 0
+    const t = setInterval(() => {
+      cur += inc
+      if (cur >= target) { setCount(target); clearInterval(t) }
+      else setCount(Math.floor(cur))
+    }, dur / steps)
+    return () => clearInterval(t)
   }, [inView, target])
-
   return (
-    <span
-      className="font-display font-light leading-none"
-      style={{
-        fontSize: 'clamp(3rem, 7vw, 5.5rem)',
-        color: 'var(--white)',
-        letterSpacing: '-0.04em',
-      }}
-    >
+    <span className="font-mono-dm font-black block" style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: 'var(--cyan)', letterSpacing: '-0.03em', lineHeight: 1 }}>
       {prefix}{count}{suffix}
     </span>
   )
 }
 
 export default function TheNumbers() {
-  const ref    = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setInView(true) },
-      { threshold: 0.15 }
-    )
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold: 0.2 })
     if (ref.current) obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
@@ -90,91 +40,108 @@ export default function TheNumbers() {
   return (
     <section
       ref={ref}
-      className="section-pad relative overflow-hidden"
-      style={{ background: 'var(--ink-mid)' }}
+      className="section-pad relative overflow-hidden "
+      style={{ background: 'var(--bg-raised)' }}
     >
-      {/* Background line grid */}
-      <div className="absolute inset-0 line-grid opacity-60 pointer-events-none" />
+      {/* Dot grid */}
+      <div className="absolute inset-0 dot-grid pointer-events-none" style={{ opacity: 0.35 }} />
+
+      {/* Connecting line — desktop */}
+      <div
+        className="absolute hidden lg:block"
+        style={{
+          top: '50%',
+          left: 'calc(12.5% + 2rem)',
+          right: 'calc(12.5% + 2rem)',
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent, rgba(0,212,255,0.08), rgba(0,212,255,0.08), rgba(0,212,255,0.08), transparent)',
+          zIndex: 0,
+        }}
+      />
 
       <div className="container-pad relative z-10">
 
-        {/* Section header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-20" style={{ borderBottom: 'var(--rule)', paddingBottom: '3rem' }}>
-          <div>
-            <div className="eyebrow mb-4">The Scale of Opportunity</div>
-            <h2
-              className="font-display font-light leading-none"
-              style={{ fontSize: 'clamp(2.2rem, 5.5vw, 4.5rem)', color: 'var(--white)', letterSpacing: '-0.03em' }}
-            >
-              This problem is<br />
-              <em style={{ fontStyle: 'italic', color: 'var(--cloud)' }}>massive.</em>
-            </h2>
-          </div>
-          <p className="max-w-xs text-sm leading-relaxed" style={{ color: 'var(--silver)', paddingBottom: '0.25rem' }}>
-            So is the opportunity. We are building infrastructure to unlock
-            Africa's most undercapitalised resource: idle physical assets.
-          </p>
+        {/* Header */}
+        <div className="text-center mb-14">
+          <span className="eyebrow">System Telemetry</span>
+          <h2
+            className="font-display font-black mt-5"
+            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', color: 'var(--text-white)', letterSpacing: '-0.025em', lineHeight: 1.05 }}
+          >
+            This problem is massive.{' '}
+            <span style={{ WebkitTextStroke: '1px rgba(255,255,255,0.18)', color: 'transparent' }}>
+              So is the opportunity.
+            </span>
+          </h2>
         </div>
 
-        {/* Stats — editorial 4-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat, i) => (
+        {/* Data nodes grid */}
+        <div
+          className="grid grid-cols-2 lg:grid-cols-4"
+          style={{ border: '1px solid var(--border-dim)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}
+        >
+          {stats.map((s, i) => (
             <div
-              key={stat.index}
-              className={`py-10 pr-8 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              key={s.label}
+              className="p-6 md:p-8 relative group transition-all duration-300"
               style={{
-                borderRight: i < 3 ? 'var(--rule)' : 'none',
-                borderLeft: i === 0 ? 'none' : undefined,
-                transitionDelay: `${i * 120}ms`,
-                paddingLeft: i === 0 ? 0 : '2rem',
+                background: inView ? (i % 2 === 0 ? 'var(--bg-elevated)' : 'var(--bg-surface)') : 'var(--bg-elevated)',
+                borderRight: i < 3 ? '1px solid var(--border-dim)' : 'none',
+                transitionDelay: `${i * 100}ms`,
               }}
             >
-              {/* Index */}
-              <span
-                className="font-mono-dm block mb-6"
-                style={{ fontSize: '0.58rem', letterSpacing: '0.22em', color: 'var(--ash)', textTransform: 'uppercase' }}
+              {/* Node ID */}
+              <div
+                className="font-mono-dm text-[0.5rem] tracking-widest mb-3 flex items-center gap-1.5"
+                style={{ color: 'var(--text-muted)', letterSpacing: '0.22em' }}
               >
-                {stat.index}
-              </span>
-
-              {/* Number */}
-              <div className="mb-4">
-                <CountUp
-                  target={stat.numericValue}
-                  prefix={stat.prefix}
-                  suffix={stat.suffix}
-                  inView={inView}
-                />
+                <span className="w-1 h-1 rounded-full" style={{ background: 'var(--cyan)', opacity: 0.5 }} />
+                {s.id}
               </div>
 
-              {/* Label */}
-              <p className="text-sm font-medium mb-2 leading-snug" style={{ color: 'var(--pearl)' }}>
-                {stat.label}
-              </p>
-              <p className="text-xs leading-relaxed" style={{ color: 'var(--silver)' }}>
-                {stat.sub}
-              </p>
+              <CountUp target={s.numericValue} prefix={s.prefix} suffix={s.suffix} inView={inView} />
+
+              <div className="mt-3 text-sm font-medium" style={{ color: 'var(--text-soft)' }}>{s.label}</div>
+              <div className="mt-1 text-xs leading-snug" style={{ color: 'var(--text-mid)' }}>{s.sub}</div>
+
+              {/* Hover glow */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-300"
+                style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.04) 0%, transparent 70%)' }}
+              />
             </div>
           ))}
         </div>
 
-        {/* Callout banner — full-width editorial pull quote */}
+        {/* Callout — terminal style */}
         <div
-          className="mt-16 px-8 md:px-14 py-10"
-          style={{ border: 'var(--rule)', borderLeft: '3px solid var(--white)', background: 'rgba(255,255,255,0.02)' }}
+          className="mt-6 terminal"
         >
-          <div className="eyebrow mb-4">The Economics</div>
-          <p
-            className="font-display font-light leading-snug"
-            style={{ fontSize: 'clamp(1.35rem, 3.5vw, 2.2rem)', color: 'var(--white)', letterSpacing: '-0.02em' }}
-          >
-            A $300 power pack. Rented for{' '}
-            <em style={{ fontStyle: 'italic', color: 'var(--cloud)' }}>$5 a day.</em> For just{' '}
-            <em style={{ fontStyle: 'italic', color: 'var(--cloud)' }}>15 days</em> per month.
-            That's <span style={{ color: 'var(--white)', fontWeight: 600 }}>$75/month</span>.
-            Fully repaid in <span style={{ color: 'var(--white)', fontWeight: 600 }}>4 months</span>.
-            Then it's pure profit — indefinitely.
-          </p>
+          <div className="terminal-bar">
+            <div className="terminal-dot" />
+            <div className="terminal-dot" />
+            <div className="terminal-dot" />
+            <span className="font-mono-dm text-[0.58rem] tracking-wider ml-2" style={{ color: 'var(--text-muted)' }}>
+              softari.node → revenue_model.calc
+            </span>
+          </div>
+          <div className="p-5 md:p-6">
+            <p className="font-mono-dm" style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1rem)', color: 'var(--text-soft)', lineHeight: 1.8 }}>
+              <span style={{ color: 'var(--text-dim)' }}>$ </span>
+              <span style={{ color: 'var(--cyan)' }}>calc</span>
+              {' '}--unit=power_pack --cost=300 --rate=5 --days=15
+            </p>
+            <p className="font-mono-dm mt-3" style={{ fontSize: 'clamp(0.85rem, 1.6vw, 1.05rem)', color: 'var(--text-bright)', lineHeight: 1.8 }}>
+              → Monthly revenue:{' '}
+              <span style={{ color: 'var(--cyan)' }}>$75/mo</span>
+              {'  '}·{'  '}
+              Payback period:{' '}
+              <span style={{ color: 'var(--text-soft)' }}>4 months</span>
+              {'  '}·{'  '}
+              Post-payback:{' '}
+              <span style={{ color: 'var(--text-white)' }}>pure profit</span>
+            </p>
+          </div>
         </div>
       </div>
     </section>

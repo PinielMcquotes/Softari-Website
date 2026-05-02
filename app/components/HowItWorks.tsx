@@ -4,51 +4,65 @@ import { useEffect, useRef, useState } from 'react'
 const steps = [
   {
     num: '01',
-    title: 'List Your Asset',
-    tag: 'For Asset Owners',
-    body: 'Register idle equipment, energy, or space on the Softari platform. We install a proprietary IoT device — enabling real-time monitoring, remote access control, and usage intelligence.',
-    detail: 'LoRaWAN IoT · Remote Access · Usage Analytics',
+    tag: 'Hardware',
+    title: 'Device Installed',
+    body: 'A Softari IoT device is fitted to the asset — energy pack, equipment, or space. Under one hour. No specialist required.',
     icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+        <rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="4" x2="15" y2="20"/>
+        <line x1="4" y1="9" x2="9" y2="9"/><line x1="4" y1="15" x2="9" y2="15"/>
       </svg>
     ),
+    detail: 'Local hardware · Sub-1hr install · Offline-capable',
   },
   {
     num: '02',
-    title: 'Rent Securely',
-    tag: 'For Creators & SMEs',
-    body: 'A creator or small business discovers the listing, books it, and pays via smart contract. Power flows instantly. No middleman. No paperwork. No risk of non-payment.',
-    detail: 'Smart Contracts · Instant Access · Zero Friction',
+    tag: 'Connectivity',
+    title: 'Asset Goes Live',
+    body: 'The device connects to the Softari platform via GSM or LPWAN. Real-time status, usage tracking, and access control activate immediately.',
     icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+        <path d="M1.5 8.5s4.5-5 10.5-5 10.5 5 10.5 5"/><path d="M5 12s2.5-3 7-3 7 3 7 3"/>
+        <path d="M8.5 15.5s1.5-2 3.5-2 3.5 2 3.5 2"/><circle cx="12" cy="19" r="1" fill="currentColor"/>
       </svg>
     ),
+    detail: 'GSM + LoRaWAN · Offline-first · Real-time sync',
   },
   {
     num: '03',
-    title: 'Earn Passively',
-    tag: 'Win–Win–Win',
-    body: 'The asset owner earns $75/month from just 15 rental days. Predictive maintenance keeps assets in peak condition. The economy moves forward. Everyone gains.',
-    detail: 'Automated Payouts · Predictive Maintenance · Passive Income',
+    tag: 'Platform',
+    title: 'User Accesses',
+    body: 'Renters discover and book the asset via mobile or web. A smart contract executes on payment — access granted automatically.',
     icon: (
-      <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+        <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01" strokeWidth={2}/>
+        <path d="M9 6h6"/><path d="M9 10h6"/>
       </svg>
     ),
+    detail: 'Mobile + Web · Smart contract gate · No friction',
+  },
+  {
+    num: '04',
+    tag: 'Payments',
+    title: 'Owner Gets Paid',
+    body: 'Funds settle to the digital wallet instantly. No invoices. No collection risk. No delays. Revenue — fully automated.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+        <rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+        <path d="M6 14h2"/><path d="M10 14h4"/>
+      </svg>
+    ),
+    detail: 'Digital wallet · Instant settlement · Auto-payout',
   },
 ]
 
 export default function HowItWorks() {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
+  const [hovered, setHovered] = useState<number | null>(null)
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setInView(true) },
-      { threshold: 0.1 }
-    )
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true) }, { threshold: 0.12 })
     if (ref.current) obs.observe(ref.current)
     return () => obs.disconnect()
   }, [])
@@ -58,108 +72,140 @@ export default function HowItWorks() {
       id="how-it-works"
       ref={ref}
       className="section-pad relative overflow-hidden"
-      style={{ background: 'var(--ink)', borderTop: 'var(--rule)' }}
+      style={{ background: 'var(--bg-elevated)' }}
     >
+      {/* Line grid */}
+      <div className="absolute inset-0 line-grid pointer-events-none" style={{ opacity: 0.3 }} />
+
       <div className="container-pad relative z-10">
 
         {/* Header */}
-        <div
-          className="flex flex-col md:flex-row md:items-end gap-6 mb-16 pb-10"
-          style={{ borderBottom: 'var(--rule)' }}
-        >
-          <div className="flex-1">
-            <div className="eyebrow mb-6">The Process</div>
-            <h2
-              className="font-display font-light leading-none"
-              style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', color: 'var(--white)', letterSpacing: '-0.03em' }}
-            >
-              Three steps.<br />
-              <em style={{ fontStyle: 'italic', color: 'var(--cloud)' }}>One platform.</em>
-            </h2>
-          </div>
-          <p className="max-w-xs text-sm" style={{ color: 'var(--silver)', paddingBottom: '0.2rem' }}>
-            Powered by LoRaWAN IoT and smart contracts. Every transaction is
-            automated, trustless, and fully auditable.
-          </p>
+        <div className="text-center mb-16 md:mb-20 ">
+          <span className="eyebrow">Process Flow</span>
+          <h2
+            className="font-display font-black mt-5"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', color: 'var(--text-white)', letterSpacing: '-0.025em', lineHeight: 0.95 }}
+          >
+            Four steps. Any asset.<br />
+            <span style={{ WebkitTextStroke: '1px rgba(255,255,255,0.14)', color: 'transparent' }}>
+              Fully automated.
+            </span>
+          </h2>
         </div>
 
-        {/* Steps grid */}
-        <div className="grid md:grid-cols-3" style={{ border: 'var(--rule)' }}>
+        {/* Steps */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+
+          {/* Progress connector — desktop */}
+          <div
+            className="hidden lg:block absolute z-0"
+            style={{
+              top: '52px',
+              left: 'calc(12.5% + 10px)',
+              right: 'calc(12.5% + 10px)',
+              height: '1px',
+            }}
+          >
+            <div
+              className="w-full h-full"
+              style={{ background: 'linear-gradient(90deg, rgba(0,212,255,0.25), rgba(0,212,255,0.1), rgba(0,212,255,0.1), rgba(0,212,255,0.25))' }}
+            />
+          </div>
+
           {steps.map((step, i) => (
             <div
               key={step.num}
-              className={`p-8 md:p-10 flex flex-col gap-6 transition-all duration-700 hover-lift ${
-                inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
+              className="panel-card p-7 flex flex-col relative z-10 cursor-pointer"
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
               style={{
-                borderRight: i < 2 ? 'var(--rule)' : 'none',
-                borderBottom: 'var(--rule)',
-                transitionDelay: `${i * 120}ms`,
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'opacity 0.6s, transform 0.6s, border-color 0.3s, box-shadow 0.3s',
+                transitionDelay: `${i * 100}ms`,
+                borderColor: hovered === i ? 'rgba(0,212,255,0.3)' : 'var(--border-dim)',
+                boxShadow: hovered === i ? '0 0 0 1px rgba(0,212,255,0.06), 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(0,212,255,0.06)' : 'none',
+                background: hovered === i ? 'var(--bg-surface)' : 'var(--bg-elevated)',
               }}
             >
-              {/* Header row */}
-              <div className="flex items-start justify-between">
+              {/* Step number circle */}
+              <div
+                className="w-[52px] h-[52px] rounded-full flex items-center justify-center mb-5 mx-auto relative"
+                style={{
+                  background: 'var(--bg-base)',
+                  border: hovered === i ? '1px solid var(--cyan)' : '1px solid var(--border-soft)',
+                  transition: 'border-color 0.3s',
+                  boxShadow: hovered === i ? '0 0 16px rgba(0,212,255,0.25)' : 'none',
+                }}
+              >
                 <span
-                  className="font-display font-light"
-                  style={{ fontSize: '3.5rem', color: 'rgba(255,255,255,0.08)', lineHeight: 1, letterSpacing: '-0.04em' }}
+                  className="font-mono-dm text-xs font-bold tracking-widest"
+                  style={{ color: hovered === i ? 'var(--cyan)' : 'var(--text-mid)' }}
                 >
                   {step.num}
                 </span>
-                <div style={{ color: 'var(--fog)' }}>
-                  {step.icon}
-                </div>
+                {/* Signal pulse on hover */}
+                {hovered === i && (
+                  <span
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      border: '1px solid rgba(0,212,255,0.3)',
+                      animation: 'signalPulse 1.2s ease-out infinite',
+                    }}
+                  />
+                )}
               </div>
 
               {/* Tag */}
               <span
-                className="font-mono-dm uppercase self-start"
-                style={{
-                  fontSize: '0.57rem',
-                  letterSpacing: '0.2em',
-                  color: 'var(--fog)',
-                  borderBottom: '1px solid rgba(255,255,255,0.12)',
-                  paddingBottom: '0.3rem',
-                }}
+                className="font-mono-dm text-[0.55rem] tracking-widest uppercase text-center block mb-3"
+                style={{ color: hovered === i ? 'var(--cyan)' : 'var(--text-muted)', transition: 'color 0.2s' }}
               >
                 {step.tag}
               </span>
 
-              {/* Title */}
+              {/* Icon */}
+              <div
+                className="flex justify-center mb-4"
+                style={{ color: hovered === i ? 'var(--cyan)' : 'var(--text-dim)', transition: 'color 0.3s' }}
+              >
+                {step.icon}
+              </div>
+
               <h3
-                className="font-display font-medium"
-                style={{ fontSize: '1.7rem', color: 'var(--white)', letterSpacing: '-0.01em', lineHeight: 1.1 }}
+                className="font-display text-lg font-bold mb-2 text-center"
+                style={{ color: hovered === i ? 'var(--text-white)' : 'var(--text-bright)', transition: 'color 0.2s' }}
               >
                 {step.title}
               </h3>
-
-              {/* Body */}
-              <p className="text-sm leading-relaxed flex-1" style={{ color: 'var(--silver)' }}>
+              <p className="text-sm leading-relaxed text-center mb-4 flex-1" style={{ color: 'var(--text-mid)' }}>
                 {step.body}
               </p>
 
-              {/* Detail strip */}
-              <p
-                className="font-mono-dm text-xs"
-                style={{ fontSize: '0.58rem', letterSpacing: '0.12em', color: 'var(--ash)', textTransform: 'uppercase' }}
+              {/* Detail line — appears on hover */}
+              <div
+                className="font-mono-dm text-[0.55rem] tracking-wider text-center border-t pt-3"
+                style={{
+                  color: 'var(--cyan)',
+                  borderColor: 'var(--border-dim)',
+                  opacity: hovered === i ? 1 : 0.3,
+                  transition: 'opacity 0.3s',
+                }}
               >
                 {step.detail}
-              </p>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Tech strip */}
+        {/* Tech pill strip */}
         <div
-          className="flex flex-wrap items-center gap-x-8 gap-y-3 py-5 px-0 mt-0"
-          style={{ borderBottom: 'var(--rule)' }}
+          className="mt-10 py-3.5 px-5 flex flex-wrap justify-center gap-4 md:gap-7 "
+          style={{ background: 'var(--bg-base)', border: '1px solid var(--border-dim)', borderRadius: 'var(--radius-md)' }}
         >
-          {['LoRaWAN IoT', 'Smart Contracts', 'Real-time Monitoring', 'Predictive Maintenance', 'Automated Payouts'].map((t, i) => (
-            <span
-              key={t}
-              className="font-mono-dm flex items-center gap-2"
-              style={{ fontSize: '0.58rem', letterSpacing: '0.16em', color: 'var(--ash)', textTransform: 'uppercase' }}
-            >
-              {i > 0 && <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: 'var(--smoke)', display: 'inline-block' }} />}
+          {['Custom IoT Hardware', 'GSM + LoRaWAN', 'Smart Contracts', 'Predictive Maintenance', 'Automated Settlement'].map(t => (
+            <span key={t} className="flex items-center gap-2 font-mono-dm text-[0.6rem] tracking-wider uppercase" style={{ color: 'var(--text-dim)' }}>
+              <span className="w-1 h-1 rounded-full" style={{ background: 'var(--cyan)', opacity: 0.4 }} />
               {t}
             </span>
           ))}
